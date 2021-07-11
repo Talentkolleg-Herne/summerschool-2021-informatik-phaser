@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.1/dist/phaser-arcade-physics.min.js"></script>
+  <style>
+    html, body {
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    var WIDTH = 1024;
+    var HEIGHT = 800;
+  
+    var config = {
+      type: Phaser.AUTO,
+      width: WIDTH,
+      height: HEIGHT,
+      scene: {
+        create: create
+      }
+    };
+
+    var game = new Phaser.Game(config);
+
+
+    function create() {
+      var r1 = this.add.rectangle(200, 200, 50, 150, 0xffffff);
+
+      var r2 = this.add.rectangle(600, 200, 50, 150, 0xffffff);
+      var ball = this.add.rectangle(400, 200, 50, 50, 0xffffff);
+
+    }
+  </script>
+
+</body>
+
+</html>

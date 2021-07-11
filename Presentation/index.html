@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<img src="img/phaser_logo.png" alt="reveal.js logo" style="height: 180px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
+					<h3>Einführung in die Spieleprogrammierung mit Javascript und dem Phaser Framework für ein Pong-Clon</h3>
+					<p>
+						<small>Von Dominik Robert</small>
+					</p>
+				</section>
+
+				<section>
+					<h1>Agenda</h1>
+					<ol>
+						<li>Vorbereitungen und Interna</li>
+						<li>Aufbau unserer Umgebung</li>
+						<li>Frameworks, Javascript und Phaser</li>
+						<li>Spielaufbau</li>
+						<li>Spiellogik</li>
+						<li>Weiteres</li>
+					</ol>
+				</section>
+
+				<section>
+					<p>Der Kurs geht von 9:30 bis 12:30 Uhr</p>
+					<p>Wir machen selbstverständlich eine Pause nur wann?</p>
+				</section>
+
+				<section>
+					<p>Unter diesem Link werden die Unterlagen usw. zur Verfügung gestellt:</p>
+					<a href="https://github.com/Talentkolleg-Herne/summerschool-2021-informatik-phaser">https://github.com/Talentkolleg-Herne/summerschool-2021-informatik-phaser</a>
+				</section>
+
+				<section>
+					<section>
+						<h2>Was wollen wir tun?</h2>
+						<p>Wir möchten gerne ein Pong machen oder kurz gesagt:</p>
+					</section>
+					
+					<section>
+						<img src="img/pong_game.png" alt="reveal.js logo" style="height: 250px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
