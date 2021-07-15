@@ -6,7 +6,6 @@ var config = {
   width: WIDTH,
   height: HEIGHT,
   scene: {
-    preload: preload,
     create: create,
     update: update,
   },
@@ -16,15 +15,13 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+
 var paddleLeft;
 var paddleRight;
 var ball;
 var ballX = 1;
-var ballY = 1 * Math.random() ;
+var ballY = 1;
 
-function preload() {
-  this.load.image('paddle', 'assets/images/paddle.PNG');
-}
 
 function create() {
   paddleLeft = this.add.rectangle(50, 350, 25, 100, 0xffffff)

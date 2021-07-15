@@ -5,8 +5,8 @@ Phaser stellt mehrere Funktionen zur Verfügung, die verschiedene Aufgaben haben
   * Die Preload-Funktion wird ausgeführt beim starten von Phaser. Diese Funktion kann benutzt werden um z.B. Bilder und Sounds zu laden.
 * create
   * Ist die 2. Funktion die Ausgeführt wird. Hier werden normalerweise die Bilder platziert und an die richtige Position mit der richtigen größe geschoben
-* render
-  * Die render-Funktion wird als letztes von unseren hier genannten Funktionen aufgerufen und wird immer so oft es geht ausgeführt. 
+* update
+  * Die update-Funktion wird als letztes von unseren hier genannten Funktionen aufgerufen und wird immer so oft es geht ausgeführt. 
 
 ### Unser erstes Phaser Beispiel
 Unser erstes Beispiel erläuter ich mal mit den Zeilenangaben und dem Aufbau des Codes in kleineren Schritten.
@@ -31,7 +31,7 @@ In Zeile 1 definieren wir also, dass es sich dabei um eine HTML-Datei handelt. N
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
   </head>
   <body>
   </body>
@@ -44,7 +44,7 @@ Nun können wir in den Body-Tag unser Javascript für Phaser schreiben. Da HTML 
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
   </head>
   <body>
     <script>
@@ -161,7 +161,7 @@ Unser kompletter Code sieht also nun wie folgt aus:
 <html>
 
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
   </head>
 
   <body>
@@ -188,4 +188,115 @@ Unser kompletter Code sieht also nun wie folgt aus:
     </script>
   </body>
 </html>
+```
+
+### Beginn mit unserem Projekt
+Für unser Projekt können wir wie oben anfangen, können nur die Preload Funktion weglassen, da wir keinerlei Bilder benötigen. 
+
+Wir überlegen uns welche Variablen wir brauchen und können diese erstmal Oben global anlegen um diese in allen Phaser-Funktionen verwenden zu können.
+```js
+var paddleLeft; // Linkes Paddle
+var paddleRight; // Rechtes Paddle
+var ball; // Ball
+var ballX = 1; // Geschwindigkeit in X
+var ballY = 1; // Geschwindigkeit in Y
+```
+
+Nun können wir die Create Funktion erstellen:
+```js
+function create() {
+
+}
+```
+> der nun nachfolgende Code wird wenn nichts dabei steht, in die Create-Funktion geschrieben.
+
+Innerhalb dieser Funktion können wir nun den Ball und die beiden Paddles erstellen und platzieren.
+
+```js
+paddleLeft = this.add.rectangle(50, 350, 25, 100, 0xffffff)
+paddleRight = this.add.rectangle(950, 350, 25, 100, 0xffffff)
+ball = this.add.rectangle(500, 300, 25, 25, 0xffffff)
+```
+> Erstellung dreier Rechtecke mittels der add.rectangle Funktion. Diese bekommt als erstes die Position für X, dann Y und anschließend die größe für X und Y mit. Der letzte Parameter setzt die Farbe.
+
+Als nächstes müssen wir für unsere Objekte (Rechtecke) die Physik auch aktivieren und können gleichzeitig darunter auch die Kollision für die Welt mitgeben. Die Welt ist quasi das Fenster und die Kollision damit würde uns hindern, die Paddles außerhalb des Fensters zu schieben.
+
+```js
+this.physics.add.existing(paddleLeft, false);
+this.physics.add.existing(paddleRight, false);
+this.physics.add.existing(ball, false);
+
+paddleLeft.body.setCollideWorldBounds(true);
+paddleRight.body.setCollideWorldBounds(true);
+ball.body.setCollideWorldBounds(true);
+ball.body.onWorldBounds = true;
+```
+> Aktiviert die Physik und die Kollision mit der Welt
+
+Nun können wir festlegen, was genau passieren soll, wenn die Objekte miteinander Kollidieren:
+
+```js
+this.physics.add.collider(
+  paddleRight,
+  ball,
+  function (paddle, ball) {
+    ballX *= -1;
+  }
+)
+
+this.physics.add.collider(
+  paddleLeft,
+  ball,
+  function (paddle, ball) {
+    ballX *= -1;
+  }
+)
+
+this.physics.world.on('worldbounds', function (body, up, down, left, right) {
+  if (up || down) {
+    ballY *= -1;
+  }
+})
+```
+> Was passiert mit bei einer Kollision? Dafür können wir eine neue Kollision hinzufügen für den Linken und den Rechten Paddle mit dem Ball und zum Schluss für die Welt. Dabei ändern wir aber lediglich immer die Koordinaten für unsere globalen Variablen.
+
+Wir wären nun mit der Create-Funktion durch und widmen uns nun der Update Funktion.
+
+```js
+function update() {
+
+}
+```
+> der nun nachfolgende Code wird wenn nichts dabei steht, in die update-Funktion geschrieben.
+
+Als erstes wollen wir uns die Tastatureingaben holen, dafür stellt Phaser uns eine Funktion bereit in der wir sowas Abfragen können und uns die Tasten geben lassen welche wir benötigen.
+
+```js
+let cursors = this.input.keyboard.createCursorKeys();
+let wasd = this.input.keyboard.addKeys('W,S,A,D');
+```
+> Stellt uns Objekte zur Verfügung welche wir Anschließend wieder benutzen können um die Eingaben auf der Tastatur zu erfassen
+
+Nun können wir die Eingaben abfangen:
+
+```js
+if (cursors.down.isDown) {
+  paddleRight.y += 10;
+} else if (cursors.up.isDown) {
+  paddleRight.y -= 10;
+}
+
+if (wasd.S.isDown) {
+  paddleLeft.y += 10;
+} else if (wasd.W.isDown) {
+  paddleLeft.y -= 10;
+}
+```
+> Bewege die Paddles bei der Richtigen Tastatureingabe. Das Linke Paddle wird mit WASD und das Rechte mit den Pfeiltasten gesteuer
+
+Nun fehlt nur noch die Bewegung des Balls. Diese können wir ebenfalls mit den globalen Variablen steuern und bewegen den Ball einfach mit der jeweiligen Geschwindigkeit pro Zug weiter.
+
+```js
+ball.x += ballX;
+ball.y += ballY;
 ```
