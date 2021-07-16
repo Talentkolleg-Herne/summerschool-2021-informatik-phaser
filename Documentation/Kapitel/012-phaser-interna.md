@@ -213,6 +213,7 @@ function create() {
 Innerhalb dieser Funktion können wir nun den Ball und die beiden Paddles erstellen und platzieren.
 
 ```js
+// fügt die Rechtecke auf dem Bildschirm hinzu
 paddleLeft = this.add.rectangle(50, 350, 25, 100, 0xffffff)
 paddleRight = this.add.rectangle(950, 350, 25, 100, 0xffffff)
 ball = this.add.rectangle(500, 300, 25, 25, 0xffffff)
@@ -222,13 +223,17 @@ ball = this.add.rectangle(500, 300, 25, 25, 0xffffff)
 Als nächstes müssen wir für unsere Objekte (Rechtecke) die Physik auch aktivieren und können gleichzeitig darunter auch die Kollision für die Welt mitgeben. Die Welt ist quasi das Fenster und die Kollision damit würde uns hindern, die Paddles außerhalb des Fensters zu schieben.
 
 ```js
+// Erstellt für jeden vorhandenen Körper die Physik
 this.physics.add.existing(paddleLeft, false);
 this.physics.add.existing(paddleRight, false);
 this.physics.add.existing(ball, false);
 
+// Legt fest, dass die einzelnen Rechtecke nicht außerhalb des Bildschirms fliegen dürfen
 paddleLeft.body.setCollideWorldBounds(true);
 paddleRight.body.setCollideWorldBounds(true);
 ball.body.setCollideWorldBounds(true);
+
+// aktiviert die Funktion um die Berührung des Bildschirms zu überprüfen und entsprechend zu reagieren
 ball.body.onWorldBounds = true;
 ```
 > Aktiviert die Physik und die Kollision mit der Welt
@@ -236,6 +241,7 @@ ball.body.onWorldBounds = true;
 Nun können wir festlegen, was genau passieren soll, wenn die Objekte miteinander Kollidieren:
 
 ```js
+// fügt einen Collider (prüft die Kollision zwischen zwei Objekten) für den Rechten Schläger und dem Ball hinzu
 this.physics.add.collider(
   paddleRight,
   ball,
@@ -244,6 +250,7 @@ this.physics.add.collider(
   }
 )
 
+// fügt einen Collider (prüft die Kollision zwischen zwei Objekten) für den Linken Schläger und dem Ball hinzu
 this.physics.add.collider(
   paddleLeft,
   ball,
@@ -252,9 +259,11 @@ this.physics.add.collider(
   }
 )
 
+// fügt einen Collider (prüft die Kollision zwischen zwei Objekten) für den Ball und dem oberen und unteren Bildschirmende hinzu
 this.physics.world.on('worldbounds', function (body, up, down, left, right) {
-  if (up || down) {
-    ballY *= -1;
+  if (up || down) { // kann auch einfach nur up || down sein, da es ja schon true ist. Das || ist das oder Zeichen
+    ballY *= -1; // *= ist gleichbedeutend mit ballY = ballY * -1. Das *= ist also ein Zugriff auf die Variable selbst mit dem Wert der dahinter steht
+
   }
 })
 ```
